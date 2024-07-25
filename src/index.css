@@ -1,12 +1,203 @@
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
-  margin: auto;
-  max-width: 38rem;
-  padding: 2rem;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+:root {
+  --color-primary: #dcf2f1;
+  --color-secondary: #7fc7d9;
+  --color-accent: #365486;
+  --color-background: #0f1035;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
+  max-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  cursor: pointer;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+}
+
+.main * {
+  width: 50%;
+}
+
+.top {
+  border: 2px solid var(--color-accent);
+}
+
+.text-field {
+  background-color: var(--color-accent);
+  height: 15vh;
+
+  font-size: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.text-field input {
+  margin-left: 70px;
+  width: 80vw;
+  height: 70%;
+  font-size: 2rem;
+  text-align: left;
+  border: 2px solid var(--color-accent);
+  background-color: var(--color-primary);
+  /* -webkit-app-region: drag; */
+}
+
+.predicted-words {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 30%;
+  background-color: var(--color-accent);
+}
+
+.predicted-words button {
+  font-size: 1.3rem;
+  border: 2px solid var(--color-accent);
+  background-color: var(--color-primary);
+  color: black;
+}
+
+.predicted-words button:hover {
+  transform: scale(1.1);
+  background-color: coral;
+  color: white;
+}
+
+.key-screen {
+  height: 100vh;
+  margin: 0;
+  background-color: var(--color-primary);
+  border: 1px solid var(--color-accent);
+  border-right: 15px solid var(--color-accent);
+  font-size: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-evenly; */
+  align-items: center;
+}
+
+.key-area {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 15px solid var(--color-accent);
+}
+
+.keys {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  text-align: center;
+  /* gap: 6vw; */
+  width: 80%;
+}
+
+.controls {
+  height: 20%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.controls * {
+  border: 3px solid var(--color-accent);
+  font-size: large;
+}
+.rest-area {
+  background-color: var(--color-primary);
+  border: 1px solid var(--color-accent);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.rest-area:hover {
+  box-shadow: inset 0 0 50px green;
+}
+
+.key-area:hover {
+  box-shadow: inset 0 0 20px var(--color-background);
+}
+
+.keys {
+  width: 100%;
+}
+
+.keys button {
+  width: 6vw;
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 3px solid var(--color-accent); */
+  border: none;
+  background-color: inherit;
+}
+
+.keys button:active {
+  /* styles to apply on click go here */
+  transform: scale(0.95); /* Makes the button slightly smaller */
+  background-color: var(--color-accent); /* Changes the background color */
+}
+
+.copy-button {
+  font-size: 2rem;
+  border: 3px solid var(--color-accent);
+  background-color: var(--color-accent);
+  color: white;
+  font-size: large;
+}
+
+.copy-button:active {
+  transform: scale(2); /* Makes the button slightly smaller */
+}
+
+.clear-button {
+  font-size: 2rem;
+  border: 3px solid var(--color-accent);
+  background-color: var(--color-accent);
+  color: white;
+  font-size: large;
+}
+
+.clear-button:active {
+  transform: scale(2);
+}
+
+.keygroup-highlight {
+  background-color: coral;
+  border: 1px solid black;
+}
+.keys button.letter-highlight {
+  background-color: ivory;
+  height: 100%;
 }

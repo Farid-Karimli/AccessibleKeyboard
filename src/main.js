@@ -9,8 +9,18 @@ if (require("electron-squirrel-startup")) {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 1000,
+    width: 900,
     height: 600,
+    maxWidth: 900,
+    maxHeight: 600,
+    titleBarStyle: "hidden",
+    titleBarOverlay:
+      process.platform == "darwin"
+        ? false
+        : { color: "#5a9dd1", symbolColor: "#21526e" },
+    fullscreenable: false,
+    maximizable: false,
+    title: "Keyboard",
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
@@ -21,6 +31,10 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
+  mainWindow.on("enter-full-screen", () => {
+    mainWindow.setFullScreen(false);
+  });
 };
 
 // This method will be called when Electron has finished
