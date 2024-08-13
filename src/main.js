@@ -10,9 +10,9 @@ const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
-    height: 600,
+    height: 630,
     maxWidth: 900,
-    maxHeight: 600,
+    maxHeight: 700,
     titleBarStyle: "hidden",
     titleBarOverlay:
       process.platform == "darwin"
@@ -23,6 +23,10 @@ const createWindow = () => {
     title: "Keyboard",
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+    },
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 

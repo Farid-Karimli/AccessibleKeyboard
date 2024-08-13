@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useContext } from "react";
 import { KeyboardContext } from "../config/context.js";
-import { Slider, Divider } from "@mui/material";
+import { Slider, Divider, TextField } from "@mui/material";
 
 export const SettingsModal = ({ open, handleClose }) => {
   const { config, setConfig } = useContext(KeyboardContext);
@@ -22,15 +22,23 @@ export const SettingsModal = ({ open, handleClose }) => {
     }
   };
 
+  const handleNumberChange = (event, value) => {
+    setConfig({ ...config, wordSuggestions: value });
+  };
+
+  const handleHoverTimeChange = (event, value) => {
+    setConfig({ ...config, hoverTime: value });
+  };
+
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose} className="settings">
       <DialogTitle>Settings</DialogTitle>
       <DialogContent>
         <Typography id="discrete-slider" gutterBottom>
           Group highlight time
         </Typography>
         <Slider
-          aria-label="Group highlight time"
+          aria-label="Group highlight time (seconds)"
           defaultValue={config.groupHighlightTimeout / 1000}
           valueLabelDisplay="auto"
           shiftStep={30}
@@ -46,7 +54,7 @@ export const SettingsModal = ({ open, handleClose }) => {
           Letter highlight time
         </Typography>
         <Slider
-          aria-label="Letter highlight time"
+          aria-label="Letter highlight time (seconds)"
           defaultValue={config.letterHighlightTimeout / 1000}
           valueLabelDisplay="auto"
           shiftStep={30}
@@ -59,7 +67,34 @@ export const SettingsModal = ({ open, handleClose }) => {
           }
         />
         <Divider />
-        
+
+        <Typography id="discrete-slider" gutterBottom>
+          Number of words to suggest
+        </Typography>
+        <TextField
+          id="outlined-number"
+          label="Number"
+          type="number"
+          value={config.maxWordSuggestions}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={(event, value) => handleNumberChange(event, value)}
+        />
+
+        <Typography id="discrete-slider" gutterBottom>
+          Hover time
+        </Typography>
+        <TextField
+          id="outlined-number"
+          label="Hover time (seconds)"
+          type="number"
+          value={config.hoverTime / 1000}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={(event, value) => handleHoverTimeChange(event, value)}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Close</Button>
