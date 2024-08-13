@@ -11,8 +11,11 @@ import { KeyboardContext } from "../config/context.js";
 export const TextField = () => {
   const [predictedWords, setpredictedWords] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [hoverTimeout, setHoverTimeout] = useState(null);
+  const [size, setSize] = useState(1); // Initial size of the button (1x scale)
+
   const { config, setConfig } = useContext(KeyboardContext);
-  console.log("Config in textfield", config);
+  const duration = config.hoverTime;
 
   const copyText = async (text) => {
     try {
@@ -28,7 +31,10 @@ export const TextField = () => {
       setpredictedWords([]);
       return;
     }
-    setpredictedWords(prediction.predict(text.target.value));
+    const options = {
+      maxPredictions: config.maxWordSuggestions,
+    };
+    setpredictedWords(prediction.predict(text.target.value, options));
     console.log(predictedWords);
   };
 
@@ -40,6 +46,44 @@ export const TextField = () => {
     setModalOpen(false);
   };
 
+  const handleMouseEnter = (word, type = "word") => {
+    const startTime = Date.now();
+
+    const interval = setInterval(() => {
+      const elapsedTime = Date.now() - startTime;
+      const scaleFactor = Math.min(1 + elapsedTime / duration, 1.5); // Scale up to 1.5x
+      setSize(scaleFactor);
+
+      if (elapsedTime >= duration) {
+        clearInterval(interval);
+        handleClick(word, type);
+      }
+    }, 16); // Update every 16ms (~60fps)
+
+    setHoverTimeout(interval);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimeout) {
+      clearInterval(hoverTimeout);
+      setHoverTimeout(null);
+      setSize(1);
+    }
+  };
+
+  const handleClick = (word, type = "word") => {
+    if (type === "copy") {
+      copyText(document.querySelector(".text-input").value);
+    } else if (type === "clear") {
+      document.querySelector(".text-input").value = "";
+    } else {
+      document.querySelector(".text-input").value = "";
+      const capitalized = word.charAt(0).toUpperCase() + word.slice(1);
+      document.querySelector(".text-input").value += capitalized;
+      setpredictedWords([]);
+    }
+  };
+
   return (
     <div className="top">
       <div className="text-field">
@@ -47,21 +91,22 @@ export const TextField = () => {
           type="text"
           className="text-input"
           onChange={(e) => predictWords(e)}
+          style={{ fontSize: config.fontSize }}
         />
 
         <button
-          className="copy-button"
-          onClick={(event) =>
-            copyText(document.querySelector(".text-input").value)
-          }
+          className="copy-button control-button"
+          onMouseEnter={(event) => handleMouseEnter("", "copy")}
+          onMouseLeave={handleMouseLeave}
+          // onClick={(event) => handleClick("", "copy")}
         >
           <ContentCopyIcon />
         </button>
         <button
-          className="clear-button"
-          onClick={(event) =>
-            (document.querySelector(".text-input").value = "")
-          }
+          className="clear-button control-button"
+          onMouseEnter={(event) => handleMouseEnter("", "clear")}
+          onMouseLeave={handleMouseLeave}
+          onClick={(event) => handleClick("", "clear")}
         >
           <DeleteIcon />
         </button>
@@ -74,10 +119,14 @@ export const TextField = () => {
                 variant={"outlined"}
                 key={index}
                 className="predicted-word"
-                onClick={(event) => {
-                  document.querySelector(".text-input").value += word;
-                  setpredictedWords([]);
-                }}
+                // onClick={(event) => {}}
+                onMouseEnter={(event) => handleMouseEnter(word)}
+                onMouseLeave={handleMouseLeave}
+                onClick={(event) => handleClick(word)}
+                // style={{
+                //   transform: `scale(${size})`,
+                //   transition: "transform 0.1s ease",
+                // }}
               >
                 {word}
               </Button>

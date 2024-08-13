@@ -43,7 +43,6 @@ body {
 .text-field {
   background-color: var(--color-accent);
   height: 15vh;
-
   font-size: 2rem;
   text-align: center;
   display: flex;
@@ -61,12 +60,17 @@ body {
   border: 2px solid var(--color-accent);
   background-color: var(--color-primary);
   /* -webkit-app-region: drag; */
+  -webkit-app-region: drag;
+}
+
+.text-field button {
+  -webkit-app-region: no-drag;
 }
 
 .predicted-words {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   width: 100%;
   height: 30%;
@@ -106,7 +110,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-bottom: 15px solid var(--color-accent);
+  border-bottom: 10px solid var(--color-accent);
 }
 
 .keys {
@@ -141,7 +145,7 @@ body {
 }
 
 .rest-area:hover {
-  box-shadow: inset 0 0 50px green;
+  background-color: lightgreen;
 }
 
 .key-area:hover {
@@ -164,9 +168,14 @@ body {
 }
 
 .keys button:active {
-  /* styles to apply on click go here */
-  transform: scale(0.95); /* Makes the button slightly smaller */
-  background-color: var(--color-accent); /* Changes the background color */
+  transform: scale(0.95);
+  background-color: var(--color-accent);
+}
+
+.punct:hover {
+  background-color: coral;
+  border: 1px solid black;
+  scale: 1.2;
 }
 
 .copy-button {
@@ -175,6 +184,11 @@ body {
   background-color: var(--color-accent);
   color: white;
   font-size: large;
+}
+
+.copy-button:hover {
+  background-color: coral;
+  color: black;
 }
 
 .copy-button:active {
@@ -189,8 +203,22 @@ body {
   font-size: large;
 }
 
+.clear-button:hover {
+  background-color: coral;
+  color: black;
+}
+
 .clear-button:active {
   transform: scale(2);
+}
+
+.control-button {
+  border: 3px solid var(--color-accent);
+  border-radius: 10%;
+  color: white;
+  font-size: large;
+  width: 6vw;
+  height: 11vh;
 }
 
 .keygroup-highlight {
@@ -200,4 +228,8 @@ body {
 .keys button.letter-highlight {
   background-color: ivory;
   height: 100%;
+}
+
+.settings {
+  width: 50%;
 }

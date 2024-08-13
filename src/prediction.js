@@ -1,6 +1,8 @@
 import Predictionary from "predictionary/src/index.mjs";
 const prediction = Predictionary.instance();
 
-prediction.addWords(["hello", "world", "foo", "bar"]);
+const topWords = require("./assets/topWords.json");
+
+prediction.addWords(topWords);
 
 export default prediction;

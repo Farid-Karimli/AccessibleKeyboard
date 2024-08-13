@@ -11,6 +11,11 @@ export const KeyArea = () => {
   const [letterGroup, setletterGroup] = useState(0);
   const [activeLetter, setactiveLetter] = useState(0);
   const [groupResetFlag, setgroupResetFlag] = useState(false);
+  const [hoverTimeout, setHoverTimeout] = useState(null);
+  const [size, setSize] = useState(1);
+
+  const duration = 1500;
+
   const { config, setConfig } = useContext(KeyboardContext);
 
   useEffect(() => {
@@ -38,6 +43,37 @@ export const KeyArea = () => {
     4: ["Q", "R", "S", "T"],
     5: ["U", "V", "W", "X"],
     6: ["Y", "Z"],
+  };
+
+  const punctuation = ["!", "?", ",", ".", ":", ";", "'", '"', "-", " "];
+
+  const handleMouseEnter = (word) => {
+    const startTime = Date.now();
+
+    const interval = setInterval(() => {
+      const elapsedTime = Date.now() - startTime;
+      const scaleFactor = Math.min(1 + elapsedTime / duration, 1.5); // Scale up to 1.5x
+      setSize(scaleFactor);
+
+      if (elapsedTime >= duration) {
+        clearInterval(interval);
+        handleClick(word);
+      }
+    }, 16); // Update every 16ms (~60fps)
+
+    setHoverTimeout(interval);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimeout) {
+      clearInterval(hoverTimeout);
+      setHoverTimeout(null);
+      setSize(1); // Reset size when mouse leaves
+    }
+  };
+
+  const handleClick = (punctuation) => {
+    document.querySelector(".text-input").value += punctuation;
   };
 
   const typeLetter = (letter) => {
@@ -115,6 +151,21 @@ export const KeyArea = () => {
                 );
               })}
             </div>
+          );
+        })}
+      </div>
+      <div className="punctuation keys">
+        {punctuation.map((p, index) => {
+          return (
+            <Button
+              key={index}
+              className="key punct"
+              onClick={() => typeLetter(p)}
+              onMouseEnter={(event) => handleMouseEnter(p)}
+              onMouseLeave={handleMouseLeave}
+            >
+              {p}
+            </Button>
           );
         })}
       </div>
