@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("node:path");
+require("dotenv").config();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -34,7 +35,12 @@ const createWindow = () => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+
+  const isDebugMode = process.env.DEBUG_MODE === "True";
+
+  if (isDebugMode) {
+    mainWindow.webContents.openDevTools();
+  }
 
   mainWindow.on("enter-full-screen", () => {
     mainWindow.setFullScreen(false);

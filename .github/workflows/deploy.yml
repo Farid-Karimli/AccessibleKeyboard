@@ -2,8 +2,6 @@ name: Camera Mouse Packaging
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
     tags:
       - "*"
   pull_request:
@@ -31,4 +29,4 @@ jobs:
       - name: Release (with exe .file)
         uses: softprops/action-gh-release@v1
         with:
-          files: "D:/a/cameramousejs/cameramousejs/out/make/squirrel.windows/x64/cameramouse-1.0.0 Setup.exe"
+          files: out/make/*.exe
