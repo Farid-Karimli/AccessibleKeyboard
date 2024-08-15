@@ -1,0 +1,34 @@
+name: Camera Mouse Packaging
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - "*"
+  pull_request:
+    branches:
+      - main
+jobs:
+  electronWindows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+      - name: Install dependencies
+        run: npm install
+      - name: Package
+        run: npm run make
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: Camera Mouse Package Exe
+          path: out/make
+      - name: Release (with exe .file)
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "D:/a/cameramousejs/cameramousejs/out/make/squirrel.windows/x64/cameramouse-1.0.0 Setup.exe"
