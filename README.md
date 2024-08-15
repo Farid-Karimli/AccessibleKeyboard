@@ -1,6 +1,6 @@
 # KeyGlide -- Accessible Keyboard Application
 
-This keyboard application is designed to be an alternative text input application for people with severe motor impairments (ALS, MS, etc). By reducing the need for accuracy, the application allows users to select groups of letters and individual letters through timed highlighting. It also includes word suggestion to further assist in text input.
+This keyboard application is designed to be an alternative text input method for people with severe motor impairments (ALS, MS, etc). By reducing the need for accuracy, the application allows users to select groups of letters and individual letters through timed highlighting. It also includes word suggestion to further assist in text input.
 
 ## Features
 
