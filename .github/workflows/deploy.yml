@@ -1,6 +1,5 @@
-name: Camera Mouse Packaging
+name: Deploy
 on:
-  workflow_dispatch:
   push:
     tags:
       - "*"
