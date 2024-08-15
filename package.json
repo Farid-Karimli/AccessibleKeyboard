@@ -1,8 +1,8 @@
 {
-  "name": "keyboardv1",
-  "productName": "keyboardv1",
+  "name": "keyglide",
+  "productName": "KeyGlide",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Accessible keyboard for people with limited mobility",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
