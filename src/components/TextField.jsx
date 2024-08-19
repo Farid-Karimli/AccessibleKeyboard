@@ -13,6 +13,7 @@ export const TextField = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [hoverTimeout, setHoverTimeout] = useState(null);
   const [size, setSize] = useState(1); // Initial size of the button (1x scale)
+  const [copyFeedback, setCopyFeedback] = useState("");
 
   const { config, setConfig } = useContext(KeyboardContext);
   const duration = config.hoverTime;
@@ -57,6 +58,9 @@ export const TextField = () => {
       if (elapsedTime >= duration) {
         clearInterval(interval);
         handleClick(word, type);
+        if (type === "copy") {
+          document.querySelector(".text-input").value = "Copied!";
+        }
       }
     }, 16); // Update every 16ms (~60fps)
 
@@ -69,6 +73,7 @@ export const TextField = () => {
       setHoverTimeout(null);
       setSize(1);
     }
+    document.querySelector(".text-input").value = "";
   };
 
   const handleClick = (word, type = "word") => {
