@@ -10,10 +10,8 @@ if (require("electron-squirrel-startup")) {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 630,
-    maxWidth: 900,
-    maxHeight: 700,
+    width: 1100,
+    height: 800,
     titleBarStyle: "hidden",
     titleBarOverlay:
       process.platform == "darwin"

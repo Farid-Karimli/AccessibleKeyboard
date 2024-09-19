@@ -13,13 +13,11 @@ const App = () => {
   return (
     <div className="top">
       <KeyboardContext.Provider value={{ config, setConfig }}>
-        <div className="top">
-          <TextField />
-          <div className="main">
-            <KeyArea />
+        <TextField />
+        <div className="main">
+          <KeyArea />
 
-            <RestArea />
-          </div>
+          <RestArea />
         </div>
       </KeyboardContext.Provider>
     </div>

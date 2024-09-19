@@ -90,7 +90,7 @@ export const TextField = () => {
   };
 
   return (
-    <div className="top">
+    <div className="keyboard-top">
       <div className="text-field">
         <input
           type="text"
