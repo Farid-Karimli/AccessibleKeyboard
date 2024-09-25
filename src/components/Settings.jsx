@@ -27,7 +27,8 @@ export const SettingsModal = ({ open, handleClose }) => {
   };
 
   const handleHoverTimeChange = (event, value) => {
-    setConfig({ ...config, hoverTime: value });
+    console.log(value);
+    setConfig({ ...config, hoverTime: value * 1000 });
   };
 
   return (
@@ -93,7 +94,8 @@ export const SettingsModal = ({ open, handleClose }) => {
           InputLabelProps={{
             shrink: true,
           }}
-          onChange={(event, value) => handleHoverTimeChange(event, value)}
+          onChange={(event) => handleHoverTimeChange(event, event.target.value)}
+          step={0.1}
         />
       </DialogContent>
       <DialogActions>

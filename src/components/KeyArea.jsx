@@ -7,33 +7,19 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 export const KeyArea = () => {
+  const [activeGroup, setactiveGroup] = useState(0);
   const [letterGroupPicked, setletterGroupPicked] = useState(false);
   const [letterGroup, setletterGroup] = useState(0);
   const [activeLetter, setactiveLetter] = useState(0);
   const [groupResetFlag, setgroupResetFlag] = useState(false);
   const [hoverTimeout, setHoverTimeout] = useState(null);
   const [size, setSize] = useState(1);
+  const [cycleCount, setCycleCount] = useState(0);
+  const maxCycles = 3; // Set the maximum number of cycles before resetting
 
   const duration = 1500;
 
   const { config, setConfig } = useContext(KeyboardContext);
-
-  useEffect(() => {
-    var interval;
-    if (!letterGroupPicked) {
-      interval = setInterval(() => {
-        setletterGroup((prev) => (prev + 1) % 7);
-      }, config.groupHighlightTimeout);
-    } else {
-      interval = setInterval(() => {
-        setactiveLetter(
-          (prev) => (prev + 1) % letterGroups[letterGroup].length
-        );
-      }, config.letterHighlightTimeout);
-    }
-
-    return () => clearInterval(interval);
-  }, [letterGroup, letterGroupPicked, activeLetter]);
 
   const letterGroups = {
     0: ["A", "B", "C", "D"],
@@ -42,10 +28,64 @@ export const KeyArea = () => {
     3: ["M", "N", "O", "P"],
     4: ["Q", "R", "S", "T"],
     5: ["U", "V", "W", "X"],
-    6: ["Y", "Z"],
+    6: ["Y", "Z", ".", ","],
+    7: ["Num", "Punct."],
   };
 
-  const punctuation = ["!", "?", ",", ".", ":", ";", "'", '"', "-", " "];
+  const numberGroups = {
+    0: ["1", "2", "3"],
+    1: ["4", "5", "6"],
+    2: ["7", "8", "9"],
+    3: ["0", ".", ","],
+    4: ["Letters", "Punct."],
+  };
+
+  const punctuationGroups = {
+    0: [".", ","],
+    1: [":", ";"],
+    2: ["!", "?"],
+    3: ["-", "_"],
+    4: ["'", '"'],
+    5: ["space"],
+    6: ["Letters", "Num"],
+  };
+
+  const keyGroups = {
+    0: letterGroups,
+    1: numberGroups,
+    2: punctuationGroups,
+  };
+
+  useEffect(() => {
+    var interval;
+    console.log(keyGroups[activeGroup][letterGroup]);
+    if (!letterGroupPicked) {
+      interval = setInterval(() => {
+        setletterGroup(
+          (prev) => (prev + 1) % Object.keys(keyGroups[activeGroup]).length
+        );
+      }, config.groupHighlightTimeout);
+    } else {
+      interval = setInterval(() => {
+        setCycleCount((prev) => {
+          if (prev >= maxCycles) {
+            setletterGroupPicked(false);
+            setCycleCount(0);
+            setletterGroup(
+              (prev) => (prev + 1) % Object.keys(keyGroups[activeGroup]).length
+            );
+            setactiveLetter(0);
+          }
+          return prev + 1;
+        });
+        setactiveLetter(
+          (prev) => (prev + 1) % keyGroups[activeGroup][letterGroup].length
+        );
+      }, config.letterHighlightTimeout);
+    }
+
+    return () => clearInterval(interval);
+  }, [letterGroup, letterGroupPicked, activeLetter]);
 
   const handleMouseEnter = (word) => {
     const startTime = Date.now();
@@ -77,6 +117,22 @@ export const KeyArea = () => {
   };
 
   const typeLetter = (letter) => {
+    if (letter == "Num") {
+      setletterGroup(0);
+      setactiveLetter(0);
+      setactiveGroup(1);
+      return;
+    } else if (letter == "Punct.") {
+      setletterGroup(0);
+      setactiveLetter(0);
+      setactiveGroup(2);
+      return;
+    } else if (letter == "Letters") {
+      setletterGroup(0);
+      setactiveLetter(0);
+      setactiveGroup(0);
+      return;
+    }
     let input = document.querySelector(".text-input");
 
     const setter = Object.getOwnPropertyDescriptor(
@@ -98,7 +154,7 @@ export const KeyArea = () => {
 
   const handleKeyAreaEnter = () => {
     if (letterGroupPicked) {
-      typeLetter(letterGroups[letterGroup][activeLetter]);
+      typeLetter(keyGroups[activeGroup][letterGroup][activeLetter]);
       setgroupResetFlag(true);
     } else {
       setletterGroupPicked(true);
@@ -125,7 +181,7 @@ export const KeyArea = () => {
         onMouseEnter={() => handleKeyAreaEnter()}
         onMouseLeave={() => handleKeyAreaLeave()}
       >
-        {Object.keys(letterGroups).map((group) => {
+        {Object.keys(keyGroups[activeGroup]).map((group) => {
           return (
             <div
               key={group}
@@ -133,7 +189,7 @@ export const KeyArea = () => {
                 letterGroup == group ? "keygroup-highlight" : ""
               }`}
             >
-              {letterGroups[group].map((letter, index) => {
+              {keyGroups[activeGroup][group].map((letter, index) => {
                 return (
                   <Button
                     key={index}
@@ -154,7 +210,7 @@ export const KeyArea = () => {
           );
         })}
       </div>
-      <div className="punctuation keys">
+      {/* <div className="punctuation keys">
         {punctuation.map((p, index) => {
           return (
             <Button
@@ -168,26 +224,6 @@ export const KeyArea = () => {
             </Button>
           );
         })}
-      </div>
-
-      {/* <div className="controls">
-        <ArrowBackIosIcon
-          onClick={() => {
-            if (letterGroup == 0) {
-              setletterGroup(5);
-            } else {
-              setletterGroup(letterGroup - 1);
-            }
-          }}
-          style={{ cursor: "pointer" }}
-        />
-
-        <ArrowForwardIosIcon
-          onClick={() =>
-            setletterGroup((letterGroup + 1) % Object.keys(letterGroups).length)
-          }
-          style={{ cursor: "pointer" }}
-        />
       </div> */}
     </div>
   );

@@ -8,19 +8,21 @@ import { KeyboardContext } from "./config/context.js";
 
 const App = () => {
   const [config, setConfig] = React.useState(configuration);
-  console.log("Config in App", config);
 
   return (
-    <div className="top">
-      <KeyboardContext.Provider value={{ config, setConfig }}>
-        <TextField />
-        <div className="main">
-          <KeyArea />
+    <React.Fragment>
+      <div className="background"></div>
+      <div className="top">
+        <KeyboardContext.Provider value={{ config, setConfig }}>
+          <TextField />
+          <div className="main">
+            <KeyArea />
 
-          <RestArea />
-        </div>
-      </KeyboardContext.Provider>
-    </div>
+            <RestArea />
+          </div>
+        </KeyboardContext.Provider>
+      </div>
+    </React.Fragment>
   );
 };
 
